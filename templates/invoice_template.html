@@ -1,0 +1,380 @@
+
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Invoice - {{ invoice.invoice_no }}</title>
+    <style>
+ body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            line-height: 1.6;
+        }
+
+        /* Header styles */
+        .header-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+  /* Remove all borders */
+  border: none;
+}
+
+.header-table td {
+  vertical-align: top;
+  padding: 0;
+  /* Remove borders on individual cells */
+  border: none;
+}
+
+.header-left {
+  width: 60%;
+}
+
+.header-right {
+  width: 40%;
+  text-align: right;
+}
+
+/* Logo */
+.logo {
+  width: 150px;
+  height: auto;
+  display: block;
+  margin-bottom: 5px;
+}
+
+.logo-text {
+            font-size: 32px;
+            font-weight: bold;
+            color: #1a1a1a;
+        }
+
+        .tagline {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .billing-title {
+            font-size: 42px;
+            color: #b5a264;
+            font-weight: normal;
+        }
+
+        .date {
+            text-align: right;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .addresses {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        .address-left {
+            color: #b5a264;
+        }
+
+        .address-right {
+            text-align: right;
+        }
+
+        .address-label {
+            color: #b5a264;
+            margin-bottom: 5px;
+        }
+
+        .company-name {
+            color: #b5a264;
+            font-weight: bold;
+        }
+
+        .address-details {
+            color: #666;
+            line-height: 1.5;
+        }
+        .a-left{
+            color: #b5a264!important;
+        }
+        .a-right{
+            font-weight: bold;
+        }
+        .recipient {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+
+
+
+
+/* end header */
+      .company-info,
+      .customer-info {
+        margin-bottom: 20px;
+      }
+      .invoice-details,
+      .staff-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .invoice-details th,
+      .invoice-details td,
+      .staff-table th,
+      .staff-table td {
+        border: 1px solid #000;
+        padding: 8px;
+      }
+      .invoice-details th {
+        background: #f0f0f0;
+      }
+      .staff-table th {
+        background: #ddd;
+      }
+      .billing-details th,
+      .billing-details td {
+        border: 1px solid #ddd;
+        padding: 8px;
+        text-align: left;
+      }
+      .payment-info {
+        margin: 40px 0;
+        padding: 15px;
+      }
+
+      /* big table */
+      table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th, td {
+            border: 1px solid #999;
+            padding: 8px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background-color: #f5f3e6;
+            font-weight: normal;
+        }
+
+        .highlight {
+            background-color: #ffff00;
+        }
+
+        .notes {
+            margin-top: 10px;
+        }
+
+        .summary {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .summary td {
+            border: 1px solid #999;
+            padding: 8px;
+        }
+
+        .summary-label {
+            text-align: right;
+            color: #666;
+            width: 85%;
+        }
+
+        .summary-value {
+            text-align: right;
+            width: 15%;
+        }
+
+        .description-cell {
+            height: 200px; /* Approximate height to match image */
+        }
+
+        /* footer */
+        .footer {
+            width: 100%;
+            font-size: 12px;
+            text-align: center;
+            color: #555;
+            margin-top: 10px;
+            background: white;
+        }
+        .footer, table, td {
+            border: none;
+        }
+
+        .footer-company {
+            color: #b5a264;
+            font-size: 18px;
+            margin-bottom: 5px;
+        }
+
+        .footer-vat {
+            color: #999;
+            font-size: 14px;
+        }
+    </style>
+  </head>
+  <body>
+<!-- header here -->
+<table class="header-table">
+    <tr>
+      <!-- Left Column -->
+      <td class="header-left">
+        <!-- <img src="{{ url_for('static', filename='logo-ritech.png') }}" alt="Logo"> -->
+         <h1 class="logo-text">RITECH</h1>
+        <div class="tagline">Right Technology, Right Solutions</div><br>
+  
+        <div class="company-address">
+          <strong class="address-label">ADDRESS:</strong><br>
+          <strong class="company-name">RITECH INTERNATIONAL AG</strong><br>
+          <div class="address-details a-left">
+              DAMMSTRASSE 19<br>
+              6300 ZUG, SWITZERLAND<br>
+              TEL: +41 41 560 734  
+            </div>
+        </div>
+      </td>
+  
+      <!-- Right Column -->
+      <td class="header-right">
+        <h1 class="billing-title">Billing Statement</h1>
+            <div class="date">Date: {{invoice.last_day_of_current_month}}</div><br>
+        <div class="recipient-address">
+          <strong>To:</strong>
+          <strong>{{ invoice.customer_name }}</strong><br>
+          <div class="address-details a-right">
+              200 Wellington<br>
+              Street West, 2nd Floor,<br>
+              Toronto, ON, M5V 3C7<br>
+              Canada
+            </div>
+        </div>
+      </td>
+    </tr>
+  </table>
+  
+  
+<!-- end header -->
+    <table >
+      <tr>
+        <th>Acct Manager</th>
+        <th>Customer</th>
+        <th>Delivery</th>
+        <th>Delivery Period</th>
+        <th>Payment Terms</th>
+        <th>Invoice No.</th>
+      </tr>
+      <tr>
+        <td>JY</td><!-- Static never changes -->
+        <td>{{ invoice.customer_name }}</td><!-- Dynamic: Customer Name -->
+        <td>Offsite</td>   <!-- Static never changes -->
+        <td><strong>{{ invoice.current_delivery_period }}</strong></td>  <!-- Dynamic: Current month and year -->
+        <td><strong>Net 30 Days</strong></td>  <!-- Static never changes -->
+        <td><strong>{{ invoice.invoice_no }}</strong></td><!-- Dynamic: Generated invoice number -->
+      </tr>
+    </table>
+    <br />
+    <table>
+        <thead>
+            <tr>
+                <th>Item</th>
+                <th>Quantity</th>
+                <th>Description</th>
+                <th>Unit Price</th>
+                <th>Rate</th>
+                <th>Line Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>1.</td>
+                <td>{{ invoice.staff_list|length }}</td>  <!-- Dynamic: Number of developers -->
+                <td class="description-cell">
+                    <strong>Monthly Project Billing for <span class="highlight">{{ invoice.current_delivery_period }}</span></strong>
+                    <br><br>
+                    {{ invoice.staff_list|length }} Developers, Full Month    <!-- Dynamic: Full count of employees -->
+                    <br><br><br><br>
+                    <div class="notes">
+                        SEE STAFF LIST ON FOLLOWING PAGE<br>
+                        ALL CHARGES IN USD
+                    </div>
+                </td>
+                <td></td>
+                <td>{{ invoice.rate }}</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+    
+
+    <table class="summary">
+        <tr>
+            <td class="summary-label">Adjustments</td>
+            <td class="summary-value">0.00</td>
+        </tr>
+        <tr>
+            <td class="summary-label">Subtotal</td>
+            <td class="summary-value"></td>
+        </tr>
+        <tr>
+            <td class="summary-label">VAT</td>
+            <td class="summary-value">EXEMPT</td>
+        </tr>
+        <tr>
+            <td class="summary-label">Total</td>
+            <td class="summary-value"></td>
+        </tr>
+    </table>
+    <div class="payment-info">
+      <strong>Contacts:</strong><br />
+      For Billing Inquiries:<br />
+      John Yuzdepski +1 (650) 533 2295<br /><br />
+
+      <strong>PAYMENTS VIA WIRE TRANSFER TO:</strong><br />
+      POSTFINANCE AG<br />
+      3030 BERN, SWITZERLAND<br />
+      SWIFT: POFICHBEXXX<br />
+      Account No. 16-419569-7<br />
+      IBAN: CH72 0900 0000 1641 9569 7<br />
+      For the Credit to: Ritech International AG<br /><br />
+
+      <em
+        >The parties agree that all bank charges will be at the expense of the
+        Customer.</em
+      ><br>
+      <table class="footer">
+        <tr><td class="footer-company">Ritech International AG</td></tr>
+        <tr ><td class="footer-vat">CHE-281.951.271 MWST</td></tr>
+    </table>
+    </div>
+
+    <h4>Staff List with Roles and Start Date</h4>
+    <table class="staff-table">
+      <tr>
+        <th>ROLE</th>
+        <th>NAME</th>
+        <th>START DATE</th>
+      </tr>
+      {% for staff in invoice.staff_list %}
+      <tr>
+        <td>{{ staff.role }}</td>
+        <td>{{ staff.name }}</td>
+        <td>{{ staff.start_date }}</td>
+      </tr>
+      {% endfor %}
+    </table><br><br><br>
+    <table class="footer">
+        <tr><td class="footer-company">Ritech International AG</td></tr>
+        <tr ><td class="footer-vat">CHE-281.951.271 MWST</td></tr>
+    </table>
+  </body>
+</html>
