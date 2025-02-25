@@ -1,119 +1,80 @@
-
-
-
 <!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8" />
     <title>Invoice - {{ invoice.invoice_no }}</title>
-    <style>
- body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-            line-height: 1.6;
-        }
-
-        /* Header styles */
-        .header-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-bottom: 20px;
-  /* Remove all borders */
-  border: none;
+<!-- <style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px auto;
+    line-height: 1.6;
+    width: 100%;
 }
 
-.header-table td {
-  vertical-align: top;
-  padding: 0;
-  /* Remove borders on individual cells */
-  border: none;
+/* Header styles */
+.header {
+    margin-bottom: 40px;
 }
 
 .header-left {
-  width: 60%;
+    float: left;
 }
 
 .header-right {
-  width: 40%;
-  text-align: right;
+    float: right;
+    text-align: right;
+    margin-top: 8px;
 }
 
-/* Logo */
-.logo {
-  width: 150px;
-  height: auto;
-  display: block;
-  margin-bottom: 5px;
+.header-ritech {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin: 0;
+    color: #000;
 }
 
-.logo-text {
-            font-size: 32px;
-            font-weight: bold;
-            color: #1a1a1a;
-        }
+.tagline {
+    font-size: 11px;
+    margin: 2px 0 0;
+    color: #333;
+}
 
-        .tagline {
-            color: #666;
-            font-size: 16px;
-        }
+.billing-statement {
+    color: #B59C46;
+    font-size: 22px;
+    margin: 0;
+}
 
-        .billing-title {
-            font-size: 42px;
-            color: #b5a264;
-            font-weight: normal;
-        }
+.date {
+    font-size: 11px;
+    margin: 5px 0 0;
+}
 
-        .date {
-            text-align: right;
-            color: #666;
-            margin-top: 10px;
-        }
+.clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+}
 
-        .addresses {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 20px;
-        }
+.addresses {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    font-size: 11px;
+    line-height: 1.4;
+}
 
-        .address-left {
-            color: #b5a264;
-        }
+.address-left, .address-right {
+    width: 40%;
+}
 
-        .address-right {
-            text-align: right;
-        }
-
-        .address-label {
-            color: #b5a264;
-            margin-bottom: 5px;
-        }
-
-        .company-name {
-            color: #b5a264;
-            font-weight: bold;
-        }
-
-        .address-details {
-            color: #666;
-            line-height: 1.5;
-        }
-        .a-left{
-            color: #b5a264!important;
-        }
-        .a-right{
-            font-weight: bold;
-        }
-        .recipient {
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-
-
-
-
+.address-right {
+    text-align: right;
+}
 /* end header */
-      .company-info,
+/* Tables */
+.company-info,
       .customer-info {
         margin-bottom: 20px;
       }
@@ -197,148 +158,315 @@
         .description-cell {
             height: 200px; /* Approximate height to match image */
         }
+        
+        /* new table styles */
+/* Footer */
+.footer {
+    font-size: 12px;
+    text-align: center;
+    color: #555;
+    margin-top: 10px;
+    float: left;
+}
+.footer, table, td {
+  border: none
+}
+.footer-company {
+    color: #b5a264;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
 
-        /* footer */
-        .footer {
-            width: 100%;
-            font-size: 12px;
-            text-align: center;
-            color: #555;
-            margin-top: 10px;
-            background: white;
-        }
-        .footer, table, td {
-            border: none;
-        }
+.footer-vat {
+    color: #999;
+    font-size: 14px;
+}
 
-        .footer-company {
-            color: #b5a264;
-            font-size: 18px;
-            margin-bottom: 5px;
-        }
+</style> -->
+  
 
-        .footer-vat {
-            color: #999;
-            font-size: 14px;
-        }
-    </style>
-  </head>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    margin: 20px auto;
+    line-height: 1.4;
+    width: 100%;
+    font-size: 11px; /* Reduced font size */
+  }
+
+  /* Header styles */
+  .header {
+    margin-bottom: 40px;
+  }
+ .logo{
+  height: 3em;  
+    width: auto;
+    vertical-align: middle;
+ }
+  .header-left {
+    float: left;
+  }
+
+  .header-right {
+    float: right;
+    text-align: right;
+    margin-top: 8px;
+  }
+
+  .header-ritech {
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    margin: 0;
+    color: #000;
+  }
+
+  .tagline {
+    font-size: 13px !important; /* Slightly increased */
+    font-weight: bold;
+    margin: 2px 0 0;
+    color: #464545 !important;
+  }
+
+  .billing-statement {
+    color: #B59C46;
+    font-size: 18px; /* Slightly reduced */
+    margin: 0;
+  }
+
+  .date {
+    font-size: 13px !important; 
+    margin: 5px 0 0;
+  }
+
+  .clearfix::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
+  .addresses {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    font-size: 10px;
+    line-height: 1.4;
+  }
+.adress-header{
+  color: #B59C46;
+  font-weight: lighter;
+}
+  .address-left, .address-right {
+    width: 40%;
+    font-weight: bold !important;
+    color: #B59C46 ;
+
+  }
+
+  .address-right {
+    text-align: right;
+    color:#666 !important;
+  }
+
+  /* Tables */
+  table, th, td {
+    border: 1px solid black !important;
+    border-collapse: collapse !important;
+}
+
+th, td {
+    padding: 6px !important;
+    font-size: 11px !important;
+    text-align: left !important;
+}
+
+  table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+      }
+      table.summary, table.summary th, table.summary td {
+    border: 1px solid black !important;
+}
+      table.summary td:last-child {
+    text-align: right !important;
+}
+      th, td {
+        border: 1px solid #999;
+        padding: 4px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background-color: #f5f3e6;
+        font-weight: normal;
+      }
+
+      .highlight {
+        background-color: #ffff00;
+      }
+
+      .notes {
+        margin-top: 10px;
+      }
+
+      .summary-label {
+        text-align: right;
+        color: #666;
+      }
+
+      .summary-value {
+        text-align: right;
+      }
+
+      .description-cell {
+        height: 200px;
+      }
+
+  .staff-table th {
+        background: #ddd;
+      }
+
+  /* Footer */
+  .footer {
+    text-align: center;
+    color: #555;
+    position: absolute; /* or absolute */
+  bottom: 0;
+  left: 0;
+  margin: 10px;
+    float: left;
+  }
+  .footer, .f-t{
+    border: none !important;
+  }
+  .footer-company {
+    color: #b5a264;
+    font-weight: bold;
+    font-size: 20px!important;
+    margin-bottom: 5px;
+  }
+
+  .footer-vat {
+    color: #b5a264;
+    font-size: 12px !important;
+  }
+
+  .payment-info {
+    margin: 30px 0;
+    padding: 12px;
+    font-size: 10px;
+  }
+
+
+</style>
+</head>
   <body>
 <!-- header here -->
-<table class="header-table">
-    <tr>
-      <!-- Left Column -->
-      <td class="header-left">
-        <!-- <img src="{{ url_for('static', filename='logo-ritech.png') }}" alt="Logo"> -->
-         <h1 class="logo-text">RITECH</h1>
-        <div class="tagline">Right Technology, Right Solutions</div><br>
-  
-        <div class="company-address">
-          <strong class="address-label">ADDRESS:</strong><br>
-          <strong class="company-name">RITECH INTERNATIONAL AG</strong><br>
-          <div class="address-details a-left">
-              DAMMSTRASSE 19<br>
-              6300 ZUG, SWITZERLAND<br>
-              TEL: +41 41 560 734  
-            </div>
-        </div>
-      </td>
-  
-      <!-- Right Column -->
-      <td class="header-right">
-        <h1 class="billing-title">Billing Statement</h1>
-            <div class="date">Date: {{invoice.last_day_of_current_month}}</div><br>
-        <div class="recipient-address">
-          <strong>To:</strong>
-          <strong>{{ invoice.customer_name }}</strong><br>
-          <div class="address-details a-right">
-              200 Wellington<br>
-              Street West, 2nd Floor,<br>
-              Toronto, ON, M5V 3C7<br>
-              Canada
-            </div>
-        </div>
-      </td>
-    </tr>
-  </table>
-  
+<div class="header clearfix">
+  <div class="header-left">
+    <div style="display: flex;">
+     <img src="data:image/png;base64,{{ logo }}" alt="logo" class="logo">
+      <h1 class="header-ritech">RITECH</h1>
+    </div>
+      <p class="tagline">Right Technology, Right Solutions.</p>
+  </div>
+  <div class="header-right">
+      <h2 class="billing-statement">Billing Statement</h2>
+      <h3 class="date">Date: {{invoice.billing_date}}</h3>
+  </div>
+</div>
+
+<div class="addresses">
+  <div class="address-left">
+      <span class="adress-header">ADDRESS:</span><br>
+      RITECH INTERNATIONAL AG<br>
+      DAMMSTRASSE 19<br>
+      6300 ZUG, SWITZERLAND<br>
+      TEL: +41 41 560 734
+  </div>
+  <div class="address-right">
+      <strong style="font-weight: bolder !important; color: #000 !important;">To: {{invoice.customer_name}}</strong><br>
+      200 Wellington<br>
+      Street West, 2nd Floor,<br>
+      Toronto, ON, M5V 3C7<br>
+      Canada
+  </div>
+</div>
   
 <!-- end header -->
-    <table >
-      <tr>
-        <th>Acct Manager</th>
-        <th>Customer</th>
-        <th>Delivery</th>
-        <th>Delivery Period</th>
-        <th>Payment Terms</th>
-        <th>Invoice No.</th>
-      </tr>
-      <tr>
-        <td>JY</td><!-- Static never changes -->
-        <td>{{ invoice.customer_name }}</td><!-- Dynamic: Customer Name -->
-        <td>Offsite</td>   <!-- Static never changes -->
-        <td><strong>{{ invoice.current_delivery_period }}</strong></td>  <!-- Dynamic: Current month and year -->
-        <td><strong>Net 30 Days</strong></td>  <!-- Static never changes -->
-        <td><strong>{{ invoice.invoice_no }}</strong></td><!-- Dynamic: Generated invoice number -->
-      </tr>
-    </table>
-    <br />
-    <table>
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Description</th>
-                <th>Unit Price</th>
-                <th>Rate</th>
-                <th>Line Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>1.</td>
-                <td>{{ invoice.staff_list|length }}</td>  <!-- Dynamic: Number of developers -->
-                <td class="description-cell">
-                    <strong>Monthly Project Billing for <span class="highlight">{{ invoice.current_delivery_period }}</span></strong>
-                    <br><br>
-                    {{ invoice.staff_list|length }} Developers, Full Month    <!-- Dynamic: Full count of employees -->
-                    <br><br><br><br>
-                    <div class="notes">
-                        SEE STAFF LIST ON FOLLOWING PAGE<br>
-                        ALL CHARGES IN USD
-                    </div>
-                </td>
-                <td></td>
-                <td>{{ invoice.rate }}</td>
-                <td></td>
-            </tr>
-        </tbody>
-    </table>
-    
-
-    <table class="summary">
-        <tr>
-            <td class="summary-label">Adjustments</td>
-            <td class="summary-value">0.00</td>
-        </tr>
-        <tr>
-            <td class="summary-label">Subtotal</td>
-            <td class="summary-value"></td>
-        </tr>
-        <tr>
-            <td class="summary-label">VAT</td>
-            <td class="summary-value">EXEMPT</td>
-        </tr>
-        <tr>
-            <td class="summary-label">Total</td>
-            <td class="summary-value"></td>
-        </tr>
-    </table>
+<table >
+  <tr>
+    <th>Acct Manager</th>
+    <th>Customer</th>
+    <th>Delivery</th>
+    <th>Delivery Period</th>
+    <th>Payment Terms</th>
+    <th>Invoice No.</th>
+  </tr>
+  <tr>
+    <td>JY</td><!-- Static never changes -->
+    <td>{{ invoice.customer_name }}</td><!-- Dynamic: Customer Name -->
+    <td>Offsite</td>   <!-- Static never changes -->
+    <td><strong><span class="highlight">{{ invoice.current_delivery_period }}</span></strong></td>  <!-- Dynamic: Current month and year -->
+    <td><strong>Net 30 Days</strong></td>  <!-- Static never changes -->
+    <td><strong><span class="highlight">{{ invoice.invoice_no }}</span></strong></td><!-- Dynamic: Generated invoice number -->
+  </tr>
+</table>
+<table>
+  <thead>
+    <tr>
+      <th>Item</th>
+      <th>Quantity</th>
+      <th>Description</th>
+      <th>Unit Price</th>
+      <th>Rate</th>
+      <th>Line Total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>1.</td>
+      <td>{{ invoice.staff_list|length }}</td>
+      <td class="description-cell">
+        <strong>Monthly Project Billing for <span class="highlight">{{ invoice.current_delivery_period }}</span></strong>
+        <br /><br />
+        {{ invoice.staff_list|length }} Developers, Full Month
+        <br /><br /><br /><br />
+        <div class="notes">
+          SEE STAFF LIST ON FOLLOWING PAGE<br />
+          ALL CHARGES IN USD
+        </div>
+      </td>
+      <td></td>
+      <td>1.0</td>
+      <td></td>
+    </tr>
+    <tr>
+      <td colspan="4" class="summary-label" style="text-align: right;">Adjustments</td>
+      <td colspan="1"></td>
+      <td colspan="2" class="summary-value">0.00</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="summary-label" style="text-align: right;">Subtotal</td>
+      <td colspan="2" class="summary-value"></td>
+    </tr>
+    <tr>
+      <td colspan="4" class="summary-label" style="text-align: right;">VAT</td>
+      <td colspan="2" class="summary-value">EXEMPT</td>
+    </tr>
+    <tr>
+      <td colspan="4" class="summary-label" style="text-align: right;">Total</td>
+      <td colspan="2" class="summary-value"></td>
+    </tr>
+  </tbody>
+</table>
+  <!-- end sec table -->
     <div class="payment-info">
-      <strong>Contacts:</strong><br />
-      For Billing Inquiries:<br />
-      John Yuzdepski +1 (650) 533 2295<br /><br />
-
+      <b>Contacts:</b><br />
+      For Billing Inquiries:  
+      <b>John Yuzdepski</b> +1 (650) 533 2295<br /><br />
       <strong>PAYMENTS VIA WIRE TRANSFER TO:</strong><br />
       POSTFINANCE AG<br />
       3030 BERN, SWITZERLAND<br />
@@ -352,12 +480,11 @@
         Customer.</em
       ><br>
       <table class="footer">
-        <tr><td class="footer-company">Ritech International AG</td></tr>
-        <tr ><td class="footer-vat">CHE-281.951.271 MWST</td></tr>
+        <tr><td class="footer-company f-t">Ritech International AG</td></tr>
+        <tr ><td class="footer-vat f-t">CHE-281.951.271 MWST</td></tr>
     </table>
-    </div>
-
-    <h4>Staff List with Roles and Start Date</h4>
+    </div><br><br>
+    <h2 style="page-break-before: always;"><strong>Staff List with Roles and Start Date </strong></h2>
     <table class="staff-table">
       <tr>
         <th>ROLE</th>
@@ -371,10 +498,11 @@
         <td>{{ staff.start_date }}</td>
       </tr>
       {% endfor %}
-    </table><br><br><br>
+    </table>
+    <br><br><br>
     <table class="footer">
-        <tr><td class="footer-company">Ritech International AG</td></tr>
-        <tr ><td class="footer-vat">CHE-281.951.271 MWST</td></tr>
+        <tr><td class="footer-company f-t">Ritech International AG</td></tr>
+        <tr ><td class="footer-vat f-t">CHE-281.951.271 MWST</td></tr>
     </table>
   </body>
 </html>
