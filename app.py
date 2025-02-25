@@ -81,7 +81,7 @@ def index():
 def process_excel(file_path):
     """Processes the uploaded Excel file and generates invoices."""
     # Read the Excel file from the "Project Allocation" sheet
-    df = pd.read_excel(file_path, sheet_name="Project Allocation", header=0)
+    df = pd.read_excel(file_path, sheet_name="Project Allocation", header=0, engine='openpyxl')
     
     # Remove the header row that is part of the data (if any)
     df = df[df['Unnamed: 0'] != 'Customer Name']
