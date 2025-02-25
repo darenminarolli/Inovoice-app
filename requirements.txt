@@ -1,4 +1,5 @@
 Flask==2.2.5
 pandas==1.5.3
+numpy==1.23.5
 WeasyPrint==53.3
 gunicorn==20.1.0
