@@ -1,31 +1,21 @@
 import base64
 import os
-from flask import Flask, request, render_template, send_from_directory, redirect, url_for, flash
+from flask import Flask, request, render_template, send_file, redirect, url_for, flash
 import pandas as pd
 from weasyprint import HTML
 from datetime import datetime
 import calendar
 import random
 import string
+import io
+import zipfile
 
 app = Flask(__name__)
-app.secret_key = 'your_secret_key'  
-
-
-desktop_path = os.path.join(os.path.expanduser("~"), "Desktop", "Invoices")
-os.makedirs(desktop_path, exist_ok=True)
-
-UPLOAD_FOLDER = 'uploads'
-OUTPUT_FOLDER = desktop_path
-
-os.makedirs(UPLOAD_FOLDER, exist_ok=True)
-os.makedirs(OUTPUT_FOLDER, exist_ok=True)
-
+app.secret_key = 'your_secret_key'
 
 def get_dates():
     now = datetime.now()
-    
-    # Determine which month to target: current if day > 3, else previous month.
+    # Use current month if day > 3, else previous month
     if now.day > 3:
         target_year = now.year
         target_month = now.month
@@ -37,30 +27,22 @@ def get_dates():
             target_year = now.year
             target_month = now.month - 1
 
-    # Get the last day of the target month.
     last_day = calendar.monthrange(target_year, target_month)[1]
     last_date = datetime(target_year, target_month, last_day)
-    
-    # 1. Last day in mm-dd-yy format.
     formatted_last_day = last_date.strftime("%m-%d-%y")
-    
-    # 2. Month in "Month YYYY" format.
     month_year_format = last_date.strftime("%B %Y")
-    
-    # 3. Last day formatted as '%y%m' (e.g., 2502 for February 2025).
     last_day_ym = last_date.strftime("%y%m")
-    
     return formatted_last_day, month_year_format, last_day_ym
+
 def get_customer_short(name):
-    """Extract short symbol for customer based on name."""
+    """Generate a short invoice number based on the customer name."""
     if "AudienceView" in name:
         return "AV"
-    start= ''.join(random.choice(string.ascii_uppercase) for x in range(2))
-    end= random.choice(string.ascii_uppercase)
-    short= name[:2].upper()
-    date1, date2, date3 = get_dates()
+    start = ''.join(random.choice(string.ascii_uppercase) for _ in range(2))
+    end = random.choice(string.ascii_uppercase)
+    short = name[:2].upper()
+    _, _, date3 = get_dates()
     invoice = f"{start}-{short}{date3}-{end}"
-
     return invoice
 
 @app.route('/', methods=['GET', 'POST'])
@@ -68,38 +50,49 @@ def index():
     if request.method == 'POST':
         file = request.files.get('excel_file')
         if file:
-            file_path = os.path.join(UPLOAD_FOLDER, file.filename)
-            file.save(file_path)
             try:
-                generated_files = process_excel(file_path)
-                return render_template('results.html', files=generated_files)
+                # Process the Excel file and generate in-memory PDFs
+                invoices = process_excel(file)
+                
+                # Package all PDFs into an in-memory ZIP file
+                zip_buffer = io.BytesIO()
+                with zipfile.ZipFile(zip_buffer, mode='w', compression=zipfile.ZIP_DEFLATED) as zip_file:
+                    for inv in invoices:
+                        zip_file.writestr(inv['filename'], inv['pdf_data'])
+                zip_buffer.seek(0)
+                
+                # Return the ZIP file for download
+                return send_file(
+                    zip_buffer,
+                    as_attachment=True,
+                    download_name="invoices.zip",
+                    mimetype="application/zip"
+                )
             except Exception as e:
                 flash(f"Error processing file: {str(e)}")
                 return redirect(url_for('index'))
     return render_template('index.html')
 
-def process_excel(file_path):
-    """Processes the uploaded Excel file and generates invoices."""
-    # Read the Excel file from the "Project Allocation" sheet
-    df = pd.read_excel(file_path, sheet_name="Project Allocation", header=0, engine='openpyxl')
-    
-    # Remove the header row that is part of the data (if any)
+def process_excel(file):
+    """
+    Processes the uploaded Excel file and generates PDFs in memory.
+    Returns a list of dictionaries with each invoice's filename and PDF bytes.
+    """
+    # Read Excel file from the file-like object
+    df = pd.read_excel(file, sheet_name="Project Allocation", header=0, engine='openpyxl')
     df = df[df['Unnamed: 0'] != 'Customer Name']
-    
-    # Fill forward the customer name
     df['Customer Name'] = df['Unnamed: 0'].ffill()
-
     
     projects = df.groupby('Customer Name')
-    generated_files = []
+    invoices = []
     invoice_count = 1
+    
     for customer, group in projects:
         project_info = group.iloc[0]
         project_id = project_info.get('Unnamed: 1', f"INV-{invoice_count:03d}")
         project_start_date = project_info.get('Unnamed: 5')
         project_end_date = project_info.get('Unnamed: 6')
 
-        
         staff_list = []
         for _, row in group.iterrows():
             role = row.get('Unnamed: 2')
@@ -123,7 +116,6 @@ def process_excel(file_path):
         invoice_no = get_customer_short(customer)
         billing_date = date1
 
-        
         invoice_data = {
             'company_name': "Ritech International AG",
             'company_details': {
@@ -134,7 +126,7 @@ def process_excel(file_path):
             'billing_statement': "Billing Statement",
             'billing_date': billing_date,
             'customer_name': customer,
-            'customer_address': "Customer address goes here",  # Update if available
+            'customer_address': "Customer address goes here",
             'project_id': project_id,
             'project_start_date': pd.to_datetime(project_start_date).strftime("%Y-%m-%d") if pd.notnull(project_start_date) else "",
             'project_end_date': pd.to_datetime(project_end_date).strftime("%Y-%m-%d") if pd.notnull(project_end_date) else "",
@@ -156,29 +148,27 @@ def process_excel(file_path):
             'acct_manager_phone': "+1 (650) 533 2295",
             'delivery_terms': "Net 30 Days",
             'current_delivery_period': current_delivery_period,
-            # 'customer_short': customer_short
         }
+
         with open("static/images/logo-ritech.png", "rb") as image_file:
             encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
-        rendered_html = render_template('invoice_template.html', invoice=invoice_data,logo=encoded_image)
+
+        rendered_html = render_template('invoice_template.html', invoice=invoice_data, logo=encoded_image)
+        
+        # Generate PDF in memory
+        pdf_buffer = io.BytesIO()
+        HTML(string=rendered_html).write_pdf(pdf_buffer)
+        pdf_buffer.seek(0)
+        pdf_data = pdf_buffer.read()
         
         safe_customer_name = "".join(c for c in customer if c.isalnum() or c in (' ', '-', '_')).strip()
-        output_pdf = os.path.join(OUTPUT_FOLDER, f"{safe_customer_name}.pdf")
+        filename = f"{safe_customer_name}.pdf"
         
-        # Generate PDF using WeasyPrint
-        HTML(string=rendered_html).write_pdf(output_pdf)
-        
-        generated_files.append(f"{safe_customer_name}.pdf")
+        invoices.append({'filename': filename, 'pdf_data': pdf_data})
         invoice_count += 1
-        
-    return generated_files
 
-@app.route('/output/<filename>')
-def download_file(filename):
-    return send_from_directory(OUTPUT_FOLDER, filename)
- 
+    return invoices
 
 if __name__ == '__main__':
-    port = int(os.environ.get('PORT', 5000))  # Use the PORT environment variable, defaulting to 5000
+    port = int(os.environ.get('PORT', 5000))
     app.run(host='0.0.0.0', port=port, debug=True)
-

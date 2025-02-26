@@ -267,33 +267,17 @@
 
         // Form submission animation
         uploadForm.addEventListener('submit', (e) => {
-            const button = uploadForm.querySelector('button');
-            button.textContent = 'Uploading...';
-            button.disabled = true;
-        });
+    const button = uploadForm.querySelector('button');
+    button.textContent = 'Uploading...';
+    button.disabled = true;
+
+    // Use a timeout to reset after some time (if page doesn't reload)
+    setTimeout(() => {
+        button.textContent = 'Upload File';
+        button.disabled = false;
+    }, 5000); // Adjust as needed
+});
+
     </script>
 </body>
 </html>
-<!-- 
-<!doctype html>
-<html>
-<head>
-    <title>Upload Excel File</title>
-</head>
-<body>
-    <h1>Upload Your Excel File</h1>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-    <form method="POST" enctype="multipart/form-data">
-        <input type="file" name="excel_file" accept=".xlsx,.xls" required>
-        <button type="submit">Submit</button>
-    </form>
-</body>
-</html> -->
