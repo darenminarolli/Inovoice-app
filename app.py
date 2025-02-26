@@ -78,11 +78,22 @@ def process_excel(file):
     Processes the uploaded Excel file and generates PDFs in memory.
     Returns a list of dictionaries with each invoice's filename and PDF bytes.
     """
-    # Read Excel file from the file-like object
+    # Read Excel file
     df = pd.read_excel(file, sheet_name="Project Allocation", header=0, engine='openpyxl')
+    
+    # Drop any fully-empty columns that might appear
+    df.dropna(how='all', axis=1, inplace=True)
+    
+    # Optional: print columns for debugging
+    # print("Columns after reading:", df.columns)
+
+    # Filter out the row that literally has 'Customer Name' in 'Unnamed: 0'
     df = df[df['Unnamed: 0'] != 'Customer Name']
+    
+    # Forward-fill customer name from 'Unnamed: 0'
     df['Customer Name'] = df['Unnamed: 0'].ffill()
     
+    # Group by the newly filled Customer Name
     projects = df.groupby('Customer Name')
     invoices = []
     invoice_count = 1
@@ -131,7 +142,10 @@ def process_excel(file):
             'project_start_date': pd.to_datetime(project_start_date).strftime("%Y-%m-%d") if pd.notnull(project_start_date) else "",
             'project_end_date': pd.to_datetime(project_end_date).strftime("%Y-%m-%d") if pd.notnull(project_end_date) else "",
             'invoice_no': invoice_no,
-            'item_description': f"Monthly Project Billing for {pd.to_datetime(project_start_date).strftime('%B %Y') if pd.notnull(project_start_date) else ''}",
+            'item_description': (
+                f"Monthly Project Billing for "
+                f"{pd.to_datetime(project_start_date).strftime('%B %Y') if pd.notnull(project_start_date) else ''}"
+            ),
             'adjustments': "0.00",
             'subtotal': "0.00",
             'vat': "EXEMPT",
@@ -150,9 +164,11 @@ def process_excel(file):
             'current_delivery_period': current_delivery_period,
         }
 
+        # Embed logo as base64
         with open("static/images/logo-ritech.png", "rb") as image_file:
             encoded_image = base64.b64encode(image_file.read()).decode('utf-8')
 
+        # Render HTML using Jinja template
         rendered_html = render_template('invoice_template.html', invoice=invoice_data, logo=encoded_image)
         
         # Generate PDF in memory
@@ -161,6 +177,7 @@ def process_excel(file):
         pdf_buffer.seek(0)
         pdf_data = pdf_buffer.read()
         
+        # Safe filename from customer name
         safe_customer_name = "".join(c for c in customer if c.isalnum() or c in (' ', '-', '_')).strip()
         filename = f"{safe_customer_name}.pdf"
         
