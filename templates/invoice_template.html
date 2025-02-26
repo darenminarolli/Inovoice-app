@@ -3,188 +3,6 @@
   <head>
     <meta charset="utf-8" />
     <title>Invoice - {{ invoice.invoice_no }}</title>
-<!-- <style>
-  body {
-    font-family: Arial, sans-serif;
-    margin: 20px auto;
-    line-height: 1.6;
-    width: 100%;
-}
-
-/* Header styles */
-.header {
-    margin-bottom: 40px;
-}
-
-.header-left {
-    float: left;
-}
-
-.header-right {
-    float: right;
-    text-align: right;
-    margin-top: 8px;
-}
-
-.header-ritech {
-    font-size: 28px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    margin: 0;
-    color: #000;
-}
-
-.tagline {
-    font-size: 11px;
-    margin: 2px 0 0;
-    color: #333;
-}
-
-.billing-statement {
-    color: #B59C46;
-    font-size: 22px;
-    margin: 0;
-}
-
-.date {
-    font-size: 11px;
-    margin: 5px 0 0;
-}
-
-.clearfix::after {
-    content: "";
-    clear: both;
-    display: table;
-}
-
-.addresses {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 25px;
-    font-size: 11px;
-    line-height: 1.4;
-}
-
-.address-left, .address-right {
-    width: 40%;
-}
-
-.address-right {
-    text-align: right;
-}
-/* end header */
-/* Tables */
-.company-info,
-      .customer-info {
-        margin-bottom: 20px;
-      }
-      .invoice-details,
-      .staff-table {
-        width: 100%;
-        border-collapse: collapse;
-      }
-      .invoice-details th,
-      .invoice-details td,
-      .staff-table th,
-      .staff-table td {
-        border: 1px solid #000;
-        padding: 8px;
-      }
-      .invoice-details th {
-        background: #f0f0f0;
-      }
-      .staff-table th {
-        background: #ddd;
-      }
-      .billing-details th,
-      .billing-details td {
-        border: 1px solid #ddd;
-        padding: 8px;
-        text-align: left;
-      }
-      .payment-info {
-        margin: 40px 0;
-        padding: 15px;
-      }
-
-      /* big table */
-      table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        th, td {
-            border: 1px solid #999;
-            padding: 8px;
-            text-align: left;
-            vertical-align: top;
-        }
-
-        th {
-            background-color: #f5f3e6;
-            font-weight: normal;
-        }
-
-        .highlight {
-            background-color: #ffff00;
-        }
-
-        .notes {
-            margin-top: 10px;
-        }
-
-        .summary {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        .summary td {
-            border: 1px solid #999;
-            padding: 8px;
-        }
-
-        .summary-label {
-            text-align: right;
-            color: #666;
-            width: 85%;
-        }
-
-        .summary-value {
-            text-align: right;
-            width: 15%;
-        }
-
-        .description-cell {
-            height: 200px; /* Approximate height to match image */
-        }
-        
-        /* new table styles */
-/* Footer */
-.footer {
-    font-size: 12px;
-    text-align: center;
-    color: #555;
-    margin-top: 10px;
-    float: left;
-}
-.footer, table, td {
-  border: none
-}
-.footer-company {
-    color: #b5a264;
-    font-size: 18px;
-    margin-bottom: 5px;
-}
-
-.footer-vat {
-    color: #999;
-    font-size: 14px;
-}
-
-</style> -->
-  
-
 <style>
   body {
     font-family: Arial, sans-serif;
@@ -312,7 +130,8 @@ th, td {
       }
 
       .summary-label {
-        text-align: right;
+        text-align: right !important;
+        border: none !important;
         color: #666;
       }
 
@@ -444,20 +263,20 @@ th, td {
       <td></td>
     </tr>
     <tr>
-      <td colspan="4" class="summary-label" style="text-align: right;">Adjustments</td>
+      <td colspan="4" class="summary-label" >Adjustments</td>
       <td colspan="1"></td>
       <td colspan="2" class="summary-value">0.00</td>
     </tr>
     <tr>
-      <td colspan="4" class="summary-label" style="text-align: right;">Subtotal</td>
+      <td colspan="4" class="summary-label" >Subtotal</td>
       <td colspan="2" class="summary-value"></td>
     </tr>
     <tr>
-      <td colspan="4" class="summary-label" style="text-align: right;">VAT</td>
+      <td colspan="4" class="summary-label" >VAT</td>
       <td colspan="2" class="summary-value">EXEMPT</td>
     </tr>
     <tr>
-      <td colspan="4" class="summary-label" style="text-align: right;">Total</td>
+      <td colspan="4" class="summary-label" >Total</td>
       <td colspan="2" class="summary-value"></td>
     </tr>
   </tbody>
